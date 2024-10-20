@@ -80,12 +80,7 @@
             <version>1.5.3.Final</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Логирование с использованием Logback и SLF4J -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.4.6</version>
-        </dependency>
+        <!-- Логирование с использованием SLF4J -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
