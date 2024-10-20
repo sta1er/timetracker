@@ -24,7 +24,7 @@ public class TimeRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @Column(name = "description", nullable = false)
     private String description;
 
     @CreationTimestamp
