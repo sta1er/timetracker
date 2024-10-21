@@ -9,6 +9,7 @@ import com.example.timetracker.repository.UserRepository;
 import com.example.timetracker.validator.user.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,13 +20,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final UserValidator userValidator;
+    private final PasswordEncoder passwordEncoder;
 
     public UserDto createUser(UserDto userDto) {
         userValidator.validate(userDto);
 
         User user = userMapper.toEntity(userDto);
-        user.setRole(UserRole.ROLE_USER);
-        //todo: passwordEncoder
+        user.setRole(UserRole.USER);
+
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         user = userRepository.save(user);
 

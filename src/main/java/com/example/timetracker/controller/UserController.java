@@ -9,13 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/auth/users")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto registerUser(@RequestBody @Valid UserDto user) {
         return userService.createUser(user);

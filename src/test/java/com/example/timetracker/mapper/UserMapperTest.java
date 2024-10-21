@@ -29,7 +29,7 @@ public class UserMapperTest {
                 .id(1L)
                 .username("testuser")
                 .password("password123")
-                .role(UserRole.ROLE_USER)
+                .role(UserRole.USER)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();

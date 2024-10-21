@@ -25,3 +25,6 @@ server:
 logging:
   level:
     root: info
+
+security:
+  secret-key: uPqvl1XJ7NpiKw4xZJB9htmwoDAgfnOFRlO3o6PIBDE=
