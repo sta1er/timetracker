@@ -32,6 +32,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         user = userRepository.save(user);
+        log.info("Created user with ID: {}", user.getId());
 
         return userMapper.toDto(user);
     }
@@ -48,6 +49,7 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
         user = userRepository.save(user);
+        log.info("Changed password for user with ID: {}", userId);
 
         return userMapper.toDto(user);
     }
@@ -61,6 +63,7 @@ public class UserService {
 
         userToUpdate.setRole(UserRole.ADMIN);
         userToUpdate = userRepository.save(userToUpdate);
+        log.info("Granted admin role to user with ID: {}", userId);
 
         return userMapper.toDto(userToUpdate);
     }
@@ -69,6 +72,7 @@ public class UserService {
     public void deleteUser(long userId, String requesterUsername) {
         userValidator.validateUserDeletion(userId, requesterUsername);
         userRepository.deleteById(userId);
+        log.info("Deleted user with ID: {}", userId);
     }
 
     private User findUserById(long id) {
