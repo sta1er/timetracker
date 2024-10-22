@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +36,48 @@ public class UserService {
         return userMapper.toDto(user);
     }
 
-    private User getUser(long id) {
+    @Transactional(readOnly = true)
+    public UserDto getUserById(long id) {
+        return userMapper.toDto(findUserById(id));
+    }
+
+    @Transactional
+    public UserDto changePassword(long userId, String newPassword, String requesterUsername) {
+        User user = findUserById(userId);
+        userValidator.validatePasswordChange(requesterUsername, user.getUsername());
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user = userRepository.save(user);
+
+        return userMapper.toDto(user);
+    }
+
+    @Transactional
+    public  UserDto grantAdminRole(long userId, String requesterUsername) {
+        User requester = findUserByUsername(requesterUsername);
+        userValidator.validateAdminRights(requester);
+
+        User userToUpdate = findUserById(userId);
+
+        userToUpdate.setRole(UserRole.ADMIN);
+        userToUpdate = userRepository.save(userToUpdate);
+
+        return userMapper.toDto(userToUpdate);
+    }
+
+    @Transactional
+    public void deleteUser(long userId, String requesterUsername) {
+        userValidator.validateUserDeletion(userId, requesterUsername);
+        userRepository.deleteById(userId);
+    }
+
+    private User findUserById(long id) {
         return userRepository.findById(id).orElseThrow(() ->
+                new UserDoesNotExist("The user does not exist!"));
+    }
+
+    private User findUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() ->
                 new UserDoesNotExist("The user does not exist!"));
     }
 }
