@@ -129,6 +129,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.0.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -137,9 +138,12 @@
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
                     </includes>
+                    <failIfNoTests>false</failIfNoTests>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>
