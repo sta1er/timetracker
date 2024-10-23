@@ -6,7 +6,7 @@ import com.example.timetracker.entity.user.UserRole;
 import com.example.timetracker.exception.user.*;
 import com.example.timetracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
@@ -17,14 +17,11 @@ public class UserValidator {
 
     private final UserRepository userRepository;
 
-    private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9]+$");
+    @Value("${validation.name-pattern}")
+    private Pattern usernamePattern;
 
-    public void validate(UserDto user) {
-        validateUsername(user.getUsername());
-    }
-
-    private void validateUsername(String username) {
-        if (!USERNAME_PATTERN.matcher(username).matches()) {
+    public void validateUsername(String username) {
+        if (!usernamePattern.matcher(username).matches()) {
             throw new UsernameInvalidException("Username can only contain letters and digits!");
         }
         if (userRepository.existsByUsername(username)) {
@@ -38,10 +35,12 @@ public class UserValidator {
         }
     }
 
-    public void validateAdminRights(User requester) {
+    public boolean validateAdminRights(User requester) {
         if (!requester.getRole().equals(UserRole.ADMIN)) {
             throw new UserNotAdminException("You do not have admin rights to perform this action!");
         }
+
+        return true;
     }
 
     public void validateUserDeletion(long userId, String requesterUsername) {

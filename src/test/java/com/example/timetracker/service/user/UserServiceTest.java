@@ -84,7 +84,7 @@ class UserServiceTest {
         assertNotNull(result);
         assertEquals(user.getId(), result.getId());
         assertEquals(user.getUsername(), result.getUsername());
-        verify(userValidator).validate(userDto);
+        verify(userValidator).validateUsername(userDto.getUsername());
         verify(passwordEncoder).encode(userDto.getPassword());
         verify(userRepository).save(user);
     }
@@ -156,5 +156,15 @@ class UserServiceTest {
     void testDeleteUser() {
         userService.deleteUser(1L, "testuser");
         verify(userRepository).deleteById(1L);
+    }
+
+    @Test
+    void testIsAdmin() {
+        when(userRepository.findByUsername("adminUser")).thenReturn(Optional.of(admin));
+        when(userValidator.validateAdminRights(admin)).thenReturn(true);
+
+        boolean result = userService.isAdmin("adminUser");
+
+        assertTrue(result);
     }
 }

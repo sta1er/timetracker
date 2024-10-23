@@ -1,8 +1,7 @@
 package com.example.timetracker.mapper;
 
-import com.example.timetracker.dto.user.UserDto;
-import com.example.timetracker.entity.user.User;
-import com.example.timetracker.entity.user.UserRole;
+import com.example.timetracker.dto.project.ProjectDto;
+import com.example.timetracker.entity.project.Project;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,33 +11,30 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserMapperTest {
+public class ProjectMapperTest {
 
-    private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+    private final ProjectMapper projectMapper = Mappers.getMapper(ProjectMapper.class);
 
     private final LocalDateTime createdAt = LocalDateTime.of(2024, 1, 1, 12, 0);
     private final  LocalDateTime updatedAt = LocalDateTime.of(2024, 1, 2, 12, 0);
 
-    private User user;
-    private UserDto userDto;
+    private Project project;
+    private ProjectDto projectDto;
 
     @BeforeEach
     public void setUp() {
-
-        user = User.builder()
+        project = Project.builder()
                 .id(1L)
-                .username("testuser")
-                .password("password123")
-                .role(UserRole.USER)
+                .name("testname")
+                .description("test description")
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();
 
-        userDto = UserDto.builder()
+        projectDto = ProjectDto.builder()
                 .id(1L)
-                .username("testuser")
-                .password("password123")
-                .role("USER")
+                .name("testname")
+                .description("test description")
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();
@@ -46,15 +42,16 @@ public class UserMapperTest {
 
     @Test
     @DisplayName("Test mapping from Entity to DTO")
-    public void testUserToUserDto() {
-        UserDto resultUserDto = userMapper.toDto(user);
-        assertEquals(userDto, resultUserDto);
+    public void testProjectToProjectDto() {
+        ProjectDto resultProjectDto = projectMapper.toDto(project);
+        assertEquals(projectDto, resultProjectDto);
     }
 
     @Test
     @DisplayName("Test mapping from DTO to Entity")
-    public void testUserDtoToUser() {
-        User resultUser = userMapper.toEntity(userDto);
-        assertEquals(user, resultUser);
+    public void testProjectDtoToProject() {
+        Project resultProject = projectMapper.toEntity(projectDto);
+        assertEquals(project, resultProject);
     }
+
 }

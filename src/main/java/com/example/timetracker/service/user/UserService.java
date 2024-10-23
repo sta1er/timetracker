@@ -24,7 +24,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserDto createUser(UserDto userDto) {
-        userValidator.validate(userDto);
+        userValidator.validateUsername(userDto.getUsername());
 
         User user = userMapper.toEntity(userDto);
         user.setRole(UserRole.USER);
@@ -56,8 +56,7 @@ public class UserService {
 
     @Transactional
     public  UserDto grantAdminRole(long userId, String requesterUsername) {
-        User requester = findUserByUsername(requesterUsername);
-        userValidator.validateAdminRights(requester);
+        isAdmin(requesterUsername);
 
         User userToUpdate = findUserById(userId);
 
@@ -73,6 +72,12 @@ public class UserService {
         userValidator.validateUserDeletion(userId, requesterUsername);
         userRepository.deleteById(userId);
         log.info("Deleted user with ID: {}", userId);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isAdmin(String username) {
+        User user = findUserByUsername(username);
+        return userValidator.validateAdminRights(user);
     }
 
     private User findUserById(long id) {

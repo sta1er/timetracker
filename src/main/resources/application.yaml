@@ -28,3 +28,7 @@ logging:
 
 security:
   secret-key: uPqvl1XJ7NpiKw4xZJB9htmwoDAgfnOFRlO3o6PIBDE=
+
+validation:
+  name-pattern: "^[a-zA-Z0-9]+$"
+
