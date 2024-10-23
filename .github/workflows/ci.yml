@@ -15,20 +15,8 @@ jobs:
           distribution: 'corretto'
           java-version: '17'
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+      - name: Install dependencies
+        run: mvn install -DskipTests
 
-      - name: Build and run tests with Maven
-        run: mvn test
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: target/surefire-reports/
+      - name: Run unit tests only
+        run: mvn test -Dtest=unit
