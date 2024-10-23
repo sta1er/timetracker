@@ -3,7 +3,7 @@ package com.example.timetracker.service.user;
 import com.example.timetracker.dto.user.UserDto;
 import com.example.timetracker.entity.user.User;
 import com.example.timetracker.entity.user.UserRole;
-import com.example.timetracker.exception.user.UserDoesNotExist;
+import com.example.timetracker.exception.user.UserDoesNotExistException;
 import com.example.timetracker.mapper.UserMapper;
 import com.example.timetracker.repository.UserRepository;
 import com.example.timetracker.validator.user.UserValidator;
@@ -105,7 +105,7 @@ class UserServiceTest {
     void testGetUserByIdNegative() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(UserDoesNotExist.class, () -> userService.getUserById(1L));
+        assertThrows(UserDoesNotExistException.class, () -> userService.getUserById(1L));
     }
 
     @Test
@@ -128,7 +128,7 @@ class UserServiceTest {
     void testChangePasswordNegative() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(UserDoesNotExist.class, () -> userService.changePassword(1L, "newPassword", "testuser"));
+        assertThrows(UserDoesNotExistException.class, () -> userService.changePassword(1L, "newPassword", "testuser"));
     }
 
     @Test
@@ -149,7 +149,7 @@ class UserServiceTest {
     void testGrantAdminRoleNegative() {
         when(userRepository.findByUsername("adminUser")).thenReturn(Optional.empty());
 
-        assertThrows(UserDoesNotExist.class, () -> userService.grantAdminRole(1L, "adminUser"));
+        assertThrows(UserDoesNotExistException.class, () -> userService.grantAdminRole(1L, "adminUser"));
     }
 
     @Test

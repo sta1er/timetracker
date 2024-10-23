@@ -3,7 +3,7 @@ package com.example.timetracker.service.user;
 import com.example.timetracker.dto.user.UserDto;
 import com.example.timetracker.entity.user.User;
 import com.example.timetracker.entity.user.UserRole;
-import com.example.timetracker.exception.user.UserDoesNotExist;
+import com.example.timetracker.exception.user.UserDoesNotExistException;
 import com.example.timetracker.mapper.UserMapper;
 import com.example.timetracker.repository.UserRepository;
 import com.example.timetracker.validator.user.UserValidator;
@@ -82,11 +82,11 @@ public class UserService {
 
     private User findUserById(long id) {
         return userRepository.findById(id).orElseThrow(() ->
-                new UserDoesNotExist("The user does not exist!"));
+                new UserDoesNotExistException("The user does not exist!"));
     }
 
     private User findUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() ->
-                new UserDoesNotExist("The user does not exist!"));
+                new UserDoesNotExistException("The user does not exist!"));
     }
 }

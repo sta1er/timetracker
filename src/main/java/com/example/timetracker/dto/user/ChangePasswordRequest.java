@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChangePasswordRequest {
-    @NotNull(message = "User id cannot be blank!")
+    @NotNull(message = "User id cannot be null!")
     private long userId;
     @NotBlank(message = "Password cannot be blank!")
     @Size(min = 6, message = "Password must be at least 6 characters long!")
